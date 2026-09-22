@@ -2382,11 +2382,237 @@ updateTransfer();
 
 
 /* =========================================================
-   STAGE 2 — RESERVED
-   DO NOT DELETE STAGE 1 ABOVE.
+   /* =========================================================
+   STAGE 2 — REVIEW & CONFIRM
+========================================================= */
 
-   Stage 2 review/confirmation code will be
-   inserted here after Stage 1 has been tested.
+const stage2 = document.getElementById("stage2");
+
+
+function openStage2() {
+
+    const transferData =
+        JSON.parse(sessionStorage.getItem("transferStage1"));
+
+    if (!transferData) {
+        showToast("No transfer details found.");
+        return;
+    }
+
+    /* Hide Stage 1 */
+
+    const stage1 = document.querySelector(".content-grid");
+
+    if (stage1) {
+        stage1.style.display = "none";
+    }
+
+
+    /* Show Stage 2 */
+
+    stage2.hidden = false;
+
+
+    /* Fill Stage 2 */
+
+    document.getElementById("reviewSending").textContent =
+        formatMoney(
+            transferData.amount,
+            transferData.sendingCurrency
+        );
+
+
+    document.getElementById("reviewReceiving").textContent =
+        formatMoney(
+            transferData.receivingAmount,
+            transferData.receivingCurrency
+        );
+
+
+    document.getElementById("reviewRate").textContent =
+        `1 ${transferData.sendingCurrency} = ${
+            transferData.exchangeRate
+        } ${transferData.receivingCurrency}`;
+
+
+    document.getElementById("reviewFee").textContent =
+        formatMoney(
+            transferData.fee,
+            transferData.sendingCurrency
+        );
+
+
+    document.getElementById("reviewTotal").textContent =
+        formatMoney(
+            transferData.total,
+            transferData.sendingCurrency
+        );
+
+
+    document.getElementById("reviewCountry").textContent =
+        transferData.destination;
+
+
+    document.getElementById("reviewCurrency").textContent =
+        transferData.receivingCurrency;
+
+
+    document.getElementById("reviewDelivery").textContent =
+        formatDeliveryMethod(
+            transferData.deliveryMethod
+        );
+
+
+    document.getElementById("reviewPayment").textContent =
+        formatPaymentMethod(
+            transferData.paymentMethod
+        );
+
+
+    document.getElementById("confirmSending").textContent =
+        formatMoney(
+            transferData.amount,
+            transferData.sendingCurrency
+        );
+
+
+    document.getElementById("confirmReceiving").textContent =
+        formatMoney(
+            transferData.receivingAmount,
+            transferData.receivingCurrency
+        );
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+
+/* =========================================================
+   DELIVERY METHOD NAME
+========================================================= */
+
+function formatDeliveryMethod(method) {
+
+    const names = {
+        bank: "Bank deposit",
+        cash: "Cash pickup",
+        wallet: "Mobile wallet"
+    };
+
+    return names[method] || method;
+}
+
+
+
+/* =========================================================
+   PAYMENT METHOD NAME
+========================================================= */
+
+function formatPaymentMethod(method) {
+
+    const names = {
+        card: "Debit / Credit card",
+        bank: "Bank account",
+        wallet: "Digital wallet"
+    };
+
+    return names[method] || method;
+}
+
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+document
+    .getElementById("stage2Back")
+    .addEventListener("click", () => {
+
+        stage2.hidden = true;
+
+        const stage1 =
+            document.querySelector(".content-grid");
+
+        if (stage1) {
+            stage1.style.display = "";
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    });
+
+
+
+/* =========================================================
+   EDIT TRANSFER
+========================================================= */
+
+document
+    .getElementById("editTransfer")
+    .addEventListener("click", () => {
+
+        stage2.hidden = true;
+
+        const stage1 =
+            document.querySelector(".content-grid");
+
+        if (stage1) {
+            stage1.style.display = "";
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    });
+
+
+
+/* =========================================================
+   CONFIRM TRANSFER
+========================================================= */
+
+document
+    .getElementById("confirmTransfer")
+    .addEventListener("click", () => {
+
+        const transferData =
+            JSON.parse(
+                sessionStorage.getItem("transferStage1")
+            );
+
+        if (!transferData) {
+            showToast("Transfer information is missing.");
+            return;
+        }
+
+
+        transferData.stage = 3;
+
+        transferData.confirmedAt =
+            new Date().toISOString();
+
+
+        sessionStorage.setItem(
+            "transferStage1",
+            JSON.stringify(transferData)
+        );
+
+
+        showToast(
+            "Transfer confirmed. Moving to processing..."
+        );
+
+    });
 ========================================================= */
 
 </script>
