@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIS(e) — Transfer Confirmation</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #f4f7f6;
+        color: #17221e;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 25px;
+    }
+
+    .receipt {
+        width: 100%;
+        max-width: 430px;
+        background: white;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 12px 35px rgba(0,0,0,.10);
+    }
+
+    .header {
+        background: #087f5b;
+        color: white;
+        padding: 28px 25px;
+        text-align: center;
+    }
+
+    .logo {
+        font-size: 27px;
+        font-weight: 800;
+        margin-bottom: 25px;
+    }
+
+    .check {
+        width: 70px;
+        height: 70px;
+        background: white;
+        color: #087f5b;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 38px;
+        margin: auto;
+    }
+
+    .header h1 {
+        margin-top: 15px;
+        font-size: 23px;
+    }
+
+    .demo {
+        background: #fff3cd;
+        color: #795c00;
+        text-align: center;
+        padding: 9px;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: .5px;
+    }
+
+    .content {
+        padding: 25px;
+    }
+
+    .amount {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .amount .sent {
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .amount .received {
+        margin-top: 7px;
+        color: #087f5b;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .section {
+        border-top: 1px solid #e7ece9;
+        padding: 19px 0;
+    }
+
+    .section-title {
+        color: #68756f;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 13px;
+        letter-spacing: .6px;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin: 10px 0;
+        font-size: 14px;
+    }
+
+    .label {
+        color: #68756f;
+    }
+
+    .value {
+        text-align: right;
+        font-weight: 600;
+        max-width: 60%;
+    }
+
+    .status {
+        color: #087f5b;
+        font-weight: 700;
+    }
+
+    .reference {
+        background: #f5f8f6;
+        border-radius: 12px;
+        padding: 13px;
+        text-align: center;
+        font-size: 13px;
+        margin-top: 8px;
+        word-break: break-all;
+    }
+
+    .footer {
+        border-top: 1px solid #e7ece9;
+        padding: 20px 25px;
+        text-align: center;
+        color: #78837e;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="receipt">
+
+    <div class="header">
+        <div class="logo">BIS(e)</div>
+
+        <div class="check">✓</div>
+
+        <h1>Transfer Successful</h1>
+    </div>
+
+    <div class="demo">
+        
+    </div>
+
+    <div class="content">
+
+        <div class="amount">
+            <div class="sent">$30.00 USD</div>
+            <div class="received">Recipient receives $42.00 CAD</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Transfer Details</div>
+
+            <div class="row">
+                <span class="label">Status</span>
+                <span class="value status">Successful</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Exchange rate</span>
+                <span class="value">1 USD = 1.40 CAD</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Date</span>
+                <span class="value">22 September 2026</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Time</span>
+                <span class="value">10:20</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Sender</div>
+
+            <div class="row">
+                <span class="label">Name</span>
+                <span class="value">Devin Mushayavanhu</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Recipient</div>
+
+            <div class="row">
+                <span class="label">Name</span>
+                <span class="value">
+                    Tanatswa Charlotte Nyavira
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Address</span>
+                <span class="value">
+                    Winnipeg, R3T 6J9
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Bank</span>
+                <span class="value">
+                    Royal Bank of Canada
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Institution</span>
+                <span class="value">003</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Transit</span>
+                <span class="value">08577</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Transaction Reference</div>
+
+            <div class="reference">
+                20260922-1020
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        BIS(e) Money Transfer<br>
+        This receipt is official
+    </div>
+
+</div>
+
+</body>
+</html>
