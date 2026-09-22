@@ -3,262 +3,2393 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BIS(e) — Transfer Confirmation</title>
+
+<title>Transferly — Send Money</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --blue: #1264e8;
+    --blue-dark: #0849b5;
+    --blue-light: #edf5ff;
+    --text: #172033;
+    --muted: #697386;
+    --border: #e4e9f0;
+    --background: #f5f8fc;
+    --white: #ffffff;
+    --green: #168452;
+    --red: #d64545;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.site-header {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    width: min(1180px, calc(100% - 40px));
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.logo {
+    width: 39px;
+    height: 39px;
+    border-radius: 11px;
+    background: var(--blue);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    font-size: 19px;
+}
+
+.logo-text {
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.logo-subtitle {
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 1px;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.header-nav a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.header-nav a:hover {
+    color: var(--blue);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-time {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.menu-button {
+    border: 1px solid var(--border);
+    background: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    background:
+        linear-gradient(
+            135deg,
+            #0e61dc,
+            #176fe9 55%,
+            #0752c8
+        );
+    color: white;
+}
+
+.hero-inner {
+    width: min(1180px, calc(100% - 40px));
+    margin: auto;
+    padding: 46px 0 55px;
+}
+
+.hero h1 {
+    margin: 0 0 10px;
+    font-size: clamp(30px, 5vw, 46px);
+    letter-spacing: -1px;
+}
+
+.hero p {
+    margin: 0;
+    max-width: 600px;
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: .9;
+}
+
+.project-badge {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 7px 11px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.2);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    width: min(1180px, calc(100% - 40px));
+    margin: -28px auto 70px;
+    position: relative;
+    z-index: 2;
+}
+
+.progress-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 17px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(25,55,95,.07);
+}
+
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.progress-title {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.progress-text {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.progress-bars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.progress-bar {
+    height: 5px;
+    border-radius: 20px;
+    background: #e3e8ef;
+}
+
+.progress-bar.active {
+    background: var(--blue);
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(300px, .8fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.form-column {
+    display: grid;
+    gap: 16px;
+}
+
+.side-column {
+    position: sticky;
+    top: 90px;
+    display: grid;
+    gap: 16px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 5px 18px rgba(30,60,100,.035);
+}
+
+.card-header {
+    margin-bottom: 18px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.card-description {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =========================
+   AMOUNT
+========================= */
+
+.amount-box {
+    border: 2px solid #dbe5f2;
+    border-radius: 15px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    transition: .2s;
+}
+
+.amount-box:focus-within {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(18,100,232,.07);
+}
+
+.currency-select {
+    border: 0;
+    background: var(--blue-light);
+    color: var(--blue-dark);
+    border-radius: 10px;
+    padding: 11px;
+    font-weight: 800;
+    outline: none;
+    cursor: pointer;
+}
+
+.amount-input {
+    border: 0;
+    outline: none;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    min-width: 0;
+}
+
+.amount-input::placeholder {
+    color: #b8c1cd;
+}
+
+.receive-preview {
+    margin-top: 14px;
+    background: var(--blue-light);
+    border: 1px solid #d8e8ff;
+    border-radius: 14px;
+    padding: 15px;
+}
+
+.receive-label {
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.receive-value {
+    font-size: 24px;
+    color: var(--blue-dark);
+    font-weight: 850;
+}
+
+.rate-line {
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 7px;
+}
+
+/* =========================
+   FIELDS
+========================= */
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    font-size: 11px;
+    font-weight: 750;
+    margin-bottom: 7px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 11px;
+    padding: 13px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    transition: .18s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(18,100,232,.07);
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.two-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+}
+
+/* =========================
+   COUNTRY
+========================= */
+
+.country-box {
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 13px;
+}
+
+.currency-output {
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 13px;
+    background: #f8fafc;
+}
+
+.currency-output small {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    margin-bottom: 4px;
+}
+
+.currency-output strong {
+    font-size: 13px;
+}
+
+/* =========================
+   DELIVERY
+========================= */
+
+.delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.delivery-option {
+    position: relative;
+}
+
+.delivery-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.delivery-label {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 17px 13px;
+    cursor: pointer;
+    transition: .18s;
+    height: 100%;
+}
+
+.delivery-label:hover {
+    border-color: #b7c9e5;
+}
+
+.delivery-option input:checked + .delivery-label {
+    border-color: var(--blue);
+    background: var(--blue-light);
+    box-shadow: 0 0 0 2px rgba(18,100,232,.05);
+}
+
+.delivery-icon {
+    width: 38px;
+    height: 38px;
+    background: #f1f4f8;
+    color: var(--blue);
+    border-radius: 11px;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.delivery-option input:checked + .delivery-label .delivery-icon {
+    background: white;
+}
+
+.delivery-label strong {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.delivery-label span {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+/* =========================
+   PAYMENT
+========================= */
+
+.payment-grid {
+    display: grid;
+    gap: 9px;
+}
+
+.payment-option {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    cursor: pointer;
+}
+
+.payment-option input {
+    width: auto;
+    accent-color: var(--blue);
+}
+
+.payment-option strong {
+    display: block;
+    font-size: 12px;
+}
+
+.payment-option span {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary-card {
+    padding: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 11px 0;
+    border-bottom: 1px solid #edf0f4;
+    font-size: 12px;
+}
+
+.summary-row:last-child {
+    border-bottom: 0;
+}
+
+.summary-row span:first-child {
+    color: var(--muted);
+}
+
+.summary-total {
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.summary-total span:first-child {
+    color: var(--text);
+}
+
+.rate-card {
+    background: #f7fbff;
+    border: 1px solid #dceaff;
+}
+
+.rate-big {
+    font-size: 20px;
+    font-weight: 850;
+    color: var(--blue-dark);
+    margin: 8px 0;
+}
+
+.rate-date {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* =========================
+   SECURITY
+========================= */
+
+.security-card {
+    display: flex;
+    gap: 11px;
+    background: #f0faf5;
+    border: 1px solid #d5efdf;
+    color: #176a45;
+}
+
+.security-icon {
+    font-size: 18px;
+}
+
+.security-card strong {
+    display: block;
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.security-card span {
+    display: block;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.continue-button {
+    width: 100%;
+    border: 0;
+    border-radius: 13px;
+    padding: 15px;
+    color: white;
+    background: linear-gradient(135deg, var(--blue), #0753c7);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 9px 22px rgba(18,100,232,.2);
+    transition: .18s;
+}
+
+.continue-button:hover {
+    transform: translateY(-1px);
+}
+
+.continue-button:active {
+    transform: scale(.99);
+}
+
+.required-note {
+    color: var(--muted);
+    font-size: 9px;
+    text-align: center;
+    margin-top: 9px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 25px;
+    transform: translate(-50%, 100px);
+    background: #121927;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 11px;
+    font-size: 11px;
+    opacity: 0;
+    transition: .25s;
+    z-index: 1000;
+    pointer-events: none;
+    text-align: center;
+    max-width: calc(100% - 30px);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 850px) {
+
+    .header-nav {
+        display: none;
     }
 
-    body {
-        background: #f4f7f6;
-        color: #17221e;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 25px;
+    .content-grid {
+        grid-template-columns: 1fr;
     }
 
-    .receipt {
-        width: 100%;
-        max-width: 430px;
-        background: white;
-        border-radius: 22px;
-        overflow: hidden;
-        box-shadow: 0 12px 35px rgba(0,0,0,.10);
+    .side-column {
+        position: static;
     }
 
-    .header {
-        background: #087f5b;
-        color: white;
-        padding: 28px 25px;
-        text-align: center;
+    .hero-inner {
+        padding: 38px 0 45px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .header-inner,
+    .hero-inner,
+    .main {
+        width: calc(100% - 28px);
     }
 
-    .logo {
-        font-size: 27px;
-        font-weight: 800;
-        margin-bottom: 25px;
+    .site-header {
+        height: 62px;
     }
 
-    .check {
-        width: 70px;
-        height: 70px;
-        background: white;
-        color: #087f5b;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 38px;
-        margin: auto;
+    .logo-text {
+        font-size: 15px;
     }
 
-    .header h1 {
-        margin-top: 15px;
-        font-size: 23px;
+    .logo-subtitle {
+        display: none;
     }
 
-    .demo {
-        background: #fff3cd;
-        color: #795c00;
-        text-align: center;
-        padding: 9px;
-        font-size: 12px;
-        font-weight: bold;
-        letter-spacing: .5px;
+    .header-time {
+        display: none;
     }
 
-    .content {
-        padding: 25px;
+    .hero-inner {
+        padding: 34px 0 40px;
     }
 
-    .amount {
-        text-align: center;
-        margin-bottom: 25px;
+    .hero h1 {
+        font-size: 31px;
     }
 
-    .amount .sent {
-        font-size: 30px;
-        font-weight: 800;
-    }
-
-    .amount .received {
-        margin-top: 7px;
-        color: #087f5b;
-        font-size: 18px;
-        font-weight: 700;
-    }
-
-    .section {
-        border-top: 1px solid #e7ece9;
-        padding: 19px 0;
-    }
-
-    .section-title {
-        color: #68756f;
-        font-size: 12px;
-        text-transform: uppercase;
-        font-weight: bold;
-        margin-bottom: 13px;
-        letter-spacing: .6px;
-    }
-
-    .row {
-        display: flex;
-        justify-content: space-between;
-        gap: 15px;
-        margin: 10px 0;
-        font-size: 14px;
-    }
-
-    .label {
-        color: #68756f;
-    }
-
-    .value {
-        text-align: right;
-        font-weight: 600;
-        max-width: 60%;
-    }
-
-    .status {
-        color: #087f5b;
-        font-weight: 700;
-    }
-
-    .reference {
-        background: #f5f8f6;
-        border-radius: 12px;
-        padding: 13px;
-        text-align: center;
+    .hero p {
         font-size: 13px;
-        margin-top: 8px;
-        word-break: break-all;
     }
 
-    .footer {
-        border-top: 1px solid #e7ece9;
-        padding: 20px 25px;
-        text-align: center;
-        color: #78837e;
-        font-size: 11px;
-        line-height: 1.5;
+    .main {
+        margin-top: -20px;
     }
+
+    .progress-card {
+        border-radius: 14px;
+    }
+
+    .card {
+        padding: 17px;
+        border-radius: 15px;
+    }
+
+    .content-grid {
+        gap: 13px;
+    }
+
+    .country-box {
+        grid-template-columns: 1fr;
+    }
+
+    .delivery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .delivery-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px;
+    }
+
+    .delivery-icon {
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    .two-fields {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .amount-input {
+        font-size: 24px;
+    }
+}
 </style>
 </head>
 
 <body>
 
-<div class="receipt">
+<!-- =========================
+     WEBSITE HEADER
+========================= -->
 
-    <div class="header">
-        <div class="logo">BIS(e)</div>
+<header class="site-header">
 
-        <div class="check">✓</div>
+    <div class="header-inner">
 
-        <h1>Transfer Successful</h1>
-    </div>
+        <div class="logo-area">
 
-    <div class="demo">
-        
-    </div>
+            <div class="logo">T</div>
 
-    <div class="content">
+            <div>
+                <div class="logo-text">Transferly</div>
+                <div class="logo-subtitle">
+                    Money Transfer Simulation
+                </div>
+            </div>
 
-        <div class="amount">
-            <div class="sent">$30.00 USD</div>
-            <div class="received">Recipient receives $42.00 CAD</div>
         </div>
 
-        <div class="section">
-            <div class="section-title">Transfer Details</div>
+        <nav class="header-nav">
+            <a href="#">Send money</a>
+            <a href="#security">Security</a>
+            <a href="#help">Help</a>
+        </nav>
 
-            <div class="row">
-                <span class="label">Status</span>
-                <span class="value status">Successful</span>
+        <div class="header-actions">
+
+            <div class="header-time" id="websiteTime">
+                00:00
             </div>
 
-            <div class="row">
-                <span class="label">Exchange rate</span>
-                <span class="value">1 USD = 1.40 CAD</span>
-            </div>
+            <button class="menu-button" id="menuButton">
+                ⋮
+            </button>
 
-            <div class="row">
-                <span class="label">Date</span>
-                <span class="value">22 September 2026</span>
-            </div>
-
-            <div class="row">
-                <span class="label">Time</span>
-                <span class="value">10:20</span>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Sender</div>
-
-            <div class="row">
-                <span class="label">Name</span>
-                <span class="value">Devin Mushayavanhu</span>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Recipient</div>
-
-            <div class="row">
-                <span class="label">Name</span>
-                <span class="value">
-                    Tanatswa Charlotte Nyavira
-                </span>
-            </div>
-
-            <div class="row">
-                <span class="label">Address</span>
-                <span class="value">
-                    Winnipeg, R3T 6J9
-                </span>
-            </div>
-
-            <div class="row">
-                <span class="label">Bank</span>
-                <span class="value">
-                    Royal Bank of Canada
-                </span>
-            </div>
-
-            <div class="row">
-                <span class="label">Institution</span>
-                <span class="value">003</span>
-            </div>
-
-            <div class="row">
-                <span class="label">Transit</span>
-                <span class="value">08577</span>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Transaction Reference</div>
-
-            <div class="reference">
-                20260922-1020
-            </div>
         </div>
 
     </div>
 
-    <div class="footer">
-        BIS(e) Money Transfer<br>
-        This receipt is official
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <div class="project-badge">
+            SCHOOL PROJECT SIMULATION
+        </div>
+
+        <h1>Send money</h1>
+
+        <p>
+            Enter your transfer details, choose how the recipient
+            receives the money, and review the exchange rate before
+            continuing.
+        </p>
+
     </div>
 
-</div>
+</section>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+    <!-- PROGRESS -->
+
+    <div class="progress-card">
+
+        <div class="progress-top">
+
+            <div class="progress-title">
+                Transfer progress
+            </div>
+
+            <div class="progress-text">
+                Step 1 of 4
+            </div>
+
+        </div>
+
+        <div class="progress-bars">
+
+            <div class="progress-bar active"></div>
+            <div class="progress-bar"></div>
+            <div class="progress-bar"></div>
+            <div class="progress-bar"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="content-grid">
+
+        <!-- =========================
+             FORM COLUMN
+        ========================= -->
+
+        <div class="form-column">
+
+
+            <!-- AMOUNT -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+                        How much are you sending?
+                    </div>
+
+                    <div class="card-description">
+                        Select the currency you are sending and enter the amount.
+                    </div>
+
+                </div>
+
+
+                <div class="amount-box">
+
+                    <select
+                        id="sendCurrency"
+                        class="currency-select"
+                    >
+
+                        <option value="USD">USD</option>
+                        <option value="GBP">GBP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="ZAR">ZAR</option>
+                        <option value="ZMW">ZMW</option>
+                        <option value="INR">INR</option>
+                        <option value="AUD">AUD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="JPY">JPY</option>
+                        <option value="CNY">CNY</option>
+
+                    </select>
+
+                    <input
+                        id="sendAmount"
+                        class="amount-input"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        inputmode="decimal"
+                        placeholder="0.00"
+                    >
+
+                </div>
+
+
+                <div class="receive-preview">
+
+                    <div class="receive-label">
+                        Recipient receives
+                    </div>
+
+                    <div
+                        class="receive-value"
+                        id="receiveAmount"
+                    >
+                        $0.00 USD
+                    </div>
+
+                    <div
+                        class="rate-line"
+                        id="rateLine"
+                    >
+                        1 USD = 1.0000 USD
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DESTINATION -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+                        Where are you sending money?
+                    </div>
+
+                    <div class="card-description">
+                        Choose the recipient's destination country.
+                    </div>
+
+                </div>
+
+
+                <div class="country-box">
+
+                    <div class="field">
+
+                        <label for="country">
+                            Destination country
+                        </label>
+
+                        <select id="country">
+
+                            <option value="US">
+                                United States
+                            </option>
+
+                            <option value="GB">
+                                United Kingdom
+                            </option>
+
+                            <option value="ZA">
+                                South Africa
+                            </option>
+
+                            <option value="ZW">
+                                Zimbabwe
+                            </option>
+
+                            <option value="ZM">
+                                Zambia
+                            </option>
+
+                            <option value="IN">
+                                India
+                            </option>
+
+                            <option value="AU">
+                                Australia
+                            </option>
+
+                            <option value="CA">
+                                Canada
+                            </option>
+
+                            <option value="JP">
+                                Japan
+                            </option>
+
+                            <option value="CN">
+                                China
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Receiving currency
+                        </label>
+
+                        <div class="currency-output">
+
+                            <small>
+                                Recipient receives
+                            </small>
+
+                            <strong id="receivingCurrency">
+                                USD
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DELIVERY -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+                        How should they receive it?
+                    </div>
+
+                    <div class="card-description">
+                        Select the delivery method for the recipient.
+                    </div>
+
+                </div>
+
+
+                <div class="delivery-grid">
+
+
+                    <div class="delivery-option">
+
+                        <input
+                            type="radio"
+                            name="delivery"
+                            id="deliveryBank"
+                            value="bank"
+                            checked
+                        >
+
+                        <label
+                            for="deliveryBank"
+                            class="delivery-label"
+                        >
+
+                            <div class="delivery-icon">
+                                🏦
+                            </div>
+
+                            <div>
+                                <strong>Bank deposit</strong>
+
+                                <span>
+                                    Deposit directly into a bank account.
+                                </span>
+                            </div>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="delivery-option">
+
+                        <input
+                            type="radio"
+                            name="delivery"
+                            id="deliveryCash"
+                            value="cash"
+                        >
+
+                        <label
+                            for="deliveryCash"
+                            class="delivery-label"
+                        >
+
+                            <div class="delivery-icon">
+                                💵
+                            </div>
+
+                            <div>
+                                <strong>Cash pickup</strong>
+
+                                <span>
+                                    Recipient collects the money in person.
+                                </span>
+                            </div>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="delivery-option">
+
+                        <input
+                            type="radio"
+                            name="delivery"
+                            id="deliveryWallet"
+                            value="wallet"
+                        >
+
+                        <label
+                            for="deliveryWallet"
+                            class="delivery-label"
+                        >
+
+                            <div class="delivery-icon">
+                                📱
+                            </div>
+
+                            <div>
+                                <strong>Mobile wallet</strong>
+
+                                <span>
+                                    Send directly to a wallet account.
+                                </span>
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- RECIPIENT -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+                        Recipient details
+                    </div>
+
+                    <div class="card-description">
+                        Enter the recipient's information.
+                    </div>
+
+                </div>
+
+
+                <!-- BANK -->
+
+                <div id="bankForm">
+
+                    <div class="field">
+
+                        <label for="bankRecipientName">
+                            Recipient full name
+                        </label>
+
+                        <input
+                            id="bankRecipientName"
+                            type="text"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="bankName">
+                            Bank name
+                        </label>
+
+                        <input
+                            id="bankName"
+                            type="text"
+                        >
+
+                    </div>
+
+
+                    <div class="two-fields">
+
+                        <div class="field">
+
+                            <label for="accountNumber">
+                                Account number
+                            </label>
+
+                            <input
+                                id="accountNumber"
+                                type="text"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="accountType">
+                                Account type
+                            </label>
+
+                            <select id="accountType">
+
+                                <option value="">
+                                    Select account type
+                                </option>
+
+                                <option>
+                                    Personal
+                                </option>
+
+                                <option>
+                                    Business
+                                </option>
+
+                                <option>
+                                    Savings
+                                </option>
+
+                                <option>
+                                    Current
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="two-fields">
+
+                        <div class="field">
+
+                            <label for="branch">
+                                Branch
+                            </label>
+
+                            <input
+                                id="branch"
+                                type="text"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="branchCode">
+                                Branch code
+                            </label>
+
+                            <input
+                                id="branchCode"
+                                type="text"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="bankPhone">
+                            Mobile number
+                        </label>
+
+                        <input
+                            id="bankPhone"
+                            type="tel"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="bankAddress">
+                            Recipient address
+                        </label>
+
+                        <textarea
+                            id="bankAddress"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CASH -->
+
+                <div
+                    id="cashForm"
+                    style="display:none;"
+                >
+
+                    <div class="field">
+
+                        <label for="cashName">
+                            Recipient full name
+                        </label>
+
+                        <input
+                            id="cashName"
+                            type="text"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="cashPhone">
+                            Mobile number
+                        </label>
+
+                        <input
+                            id="cashPhone"
+                            type="tel"
+                        >
+
+                    </div>
+
+
+                    <div class="two-fields">
+
+                        <div class="field">
+
+                            <label for="cashCity">
+                                City
+                            </label>
+
+                            <input
+                                id="cashCity"
+                                type="text"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="pickupLocation">
+                                Pickup location
+                            </label>
+
+                            <input
+                                id="pickupLocation"
+                                type="text"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="idType">
+                            Identification type
+                        </label>
+
+                        <select id="idType">
+
+                            <option value="">
+                                Select identification type
+                            </option>
+
+                            <option>
+                                National ID
+                            </option>
+
+                            <option>
+                                Passport
+                            </option>
+
+                            <option>
+                                Driver's licence
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="idNumber">
+                            Identification number
+                        </label>
+
+                        <input
+                            id="idNumber"
+                            type="text"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- WALLET -->
+
+                <div
+                    id="walletForm"
+                    style="display:none;"
+                >
+
+                    <div class="field">
+
+                        <label for="walletName">
+                            Recipient full name
+                        </label>
+
+                        <input
+                            id="walletName"
+                            type="text"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="walletProvider">
+                            Wallet provider
+                        </label>
+
+                        <input
+                            id="walletProvider"
+                            type="text"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="walletNumber">
+                            Wallet number
+                        </label>
+
+                        <input
+                            id="walletNumber"
+                            type="tel"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="walletAddress">
+                            Recipient address
+                        </label>
+
+                        <textarea
+                            id="walletAddress"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PAYMENT -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+                        How will you pay?
+                    </div>
+
+                    <div class="card-description">
+                        Select how the transfer will be funded.
+                    </div>
+
+                </div>
+
+
+                <div class="payment-grid">
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="card"
+                            checked
+                        >
+
+                        <div>
+
+                            <strong>
+                                Debit / credit card
+                            </strong>
+
+                            <span>
+                                Pay using a bank card.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="bank"
+                        >
+
+                        <div>
+
+                            <strong>
+                                Bank account
+                            </strong>
+
+                            <span>
+                                Pay directly from a bank account.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="wallet"
+                        >
+
+                        <div>
+
+                            <strong>
+                                Digital wallet
+                            </strong>
+
+                            <span>
+                                Pay using a connected wallet.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- TRANSFER DETAILS -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+                        Transfer details
+                    </div>
+
+                    <div class="card-description">
+                        Tell us what the transfer is for.
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="purpose">
+                        Purpose of transfer
+                    </label>
+
+                    <select id="purpose">
+
+                        <option value="">
+                            Select purpose
+                        </option>
+
+                        <option>
+                            Family support
+                        </option>
+
+                        <option>
+                            Personal expenses
+                        </option>
+
+                        <option>
+                            Education
+                        </option>
+
+                        <option>
+                            Medical expenses
+                        </option>
+
+                        <option>
+                            Gift
+                        </option>
+
+                        <option>
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="message">
+                        Message to recipient
+                    </label>
+
+                    <textarea
+                        id="message"
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- =========================
+             SIDE COLUMN
+        ========================= -->
+
+        <aside class="side-column">
+
+
+            <!-- SUMMARY -->
+
+            <section class="card summary-card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+                        Transfer summary
+                    </div>
+
+                    <div class="card-description">
+                        Your current transfer calculation.
+                    </div>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Sending
+                    </span>
+
+                    <strong id="summarySending">
+                        USD 0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Estimated fee
+                    </span>
+
+                    <strong id="summaryFee">
+                        USD 3.99
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Recipient gets
+                    </span>
+
+                    <strong id="summaryReceiving">
+                        USD 0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row summary-total">
+
+                    <span>
+                        Total charged
+                    </span>
+
+                    <strong id="summaryTotal">
+                        USD 3.99
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- RATE -->
+
+            <section class="card rate-card">
+
+                <div class="card-title">
+                    Exchange rate
+                </div>
+
+                <div
+                    class="rate-big"
+                    id="sideRate"
+                >
+                    1 USD = 1.0000 USD
+                </div>
+
+                <div class="rate-date">
+                    Indicative mid-market reference rate.<br>
+                    Rate snapshot: 21 September 2026, 16:00 UTC.
+                </div>
+
+            </section>
+
+
+            <!-- SECURITY -->
+
+            <section
+                class="card security-card"
+                id="security"
+            >
+
+                <div class="security-icon">
+                    🔒
+                </div>
+
+                <div>
+
+                    <strong>
+                        Secure project environment
+                    </strong>
+
+                    <span>
+                        This is an educational prototype.
+                        It does not process real money or real transactions.
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- CONTINUE -->
+
+            <section class="card">
+
+                <button
+                    class="continue-button"
+                    id="continueButton"
+                >
+                    Continue to review
+                </button>
+
+                <div class="required-note">
+                    Check your information before continuing.
+                </div>
+
+            </section>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   STAGE 1
+   CURRENCY DATA
+========================================================= */
+
+/*
+    XE snapshot:
+    21 September 2026 — 16:00 UTC
+
+    Value = USD value of one unit of each currency.
+*/
+
+const ratesToUSD = {
+
+    USD: 1,
+
+    EUR: 1.1467916963212246,
+
+    GBP: 1.3369887463501104,
+
+    INR: 0.01043856768101594,
+
+    AUD: 0.7121897952131658,
+
+    CAD: 0.7130958917238486,
+
+    JPY: 0.006349634750825369,
+
+    CNY: 0.149316460636733,
+
+    ZAR: 0.06155737818249435,
+
+    ZMW: 0.05089023589335013
+
+};
+
+
+/* Country -> receiving currency */
+
+const countryCurrencies = {
+
+    US: "USD",
+
+    GB: "GBP",
+
+    ZA: "ZAR",
+
+    ZW: "USD",
+
+    ZM: "ZMW",
+
+    IN: "INR",
+
+    AU: "AUD",
+
+    CA: "CAD",
+
+    JP: "JPY",
+
+    CN: "CNY"
+
+};
+
+
+/* Currency symbols */
+
+const currencySymbols = {
+
+    USD: "$",
+
+    GBP: "£",
+
+    EUR: "€",
+
+    INR: "₹",
+
+    AUD: "A$",
+
+    CAD: "C$",
+
+    JPY: "¥",
+
+    CNY: "¥",
+
+    ZAR: "R",
+
+    ZMW: "ZK"
+
+};
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const amountInput =
+    document.getElementById("sendAmount");
+
+const sendCurrency =
+    document.getElementById("sendCurrency");
+
+const country =
+    document.getElementById("country");
+
+const receivingCurrency =
+    document.getElementById("receivingCurrency");
+
+const receiveAmount =
+    document.getElementById("receiveAmount");
+
+const rateLine =
+    document.getElementById("rateLine");
+
+const summarySending =
+    document.getElementById("summarySending");
+
+const summaryFee =
+    document.getElementById("summaryFee");
+
+const summaryReceiving =
+    document.getElementById("summaryReceiving");
+
+const summaryTotal =
+    document.getElementById("summaryTotal");
+
+const sideRate =
+    document.getElementById("sideRate");
+
+const bankForm =
+    document.getElementById("bankForm");
+
+const cashForm =
+    document.getElementById("cashForm");
+
+const walletForm =
+    document.getElementById("walletForm");
+
+const toast =
+    document.getElementById("toast");
+
+
+/* =========================================================
+   FORMAT
+========================================================= */
+
+function formatMoney(
+    amount,
+    currency
+) {
+
+    const symbol =
+        currencySymbols[currency] || "";
+
+    return (
+        symbol +
+        Number(amount || 0).toLocaleString(
+            "en-US",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        ) +
+        " " +
+        currency
+    );
+}
+
+
+/* =========================================================
+   CROSS-CURRENCY CONVERSION
+========================================================= */
+
+function convertCurrency(
+    amount,
+    fromCurrency,
+    toCurrency
+) {
+
+    if (
+        !amount ||
+        amount <= 0
+    ) {
+        return 0;
+    }
+
+
+    /*
+        Step 1:
+        Sending currency -> USD
+
+        Step 2:
+        USD -> receiving currency
+
+        This allows ANY supported currency
+        to be converted into ANY other supported currency.
+    */
+
+    const usdAmount =
+        amount *
+        ratesToUSD[fromCurrency];
+
+
+    const receivingAmount =
+        usdAmount /
+        ratesToUSD[toCurrency];
+
+
+    return receivingAmount;
+}
+
+
+/* =========================================================
+   CROSS-CURRENCY RATE
+========================================================= */
+
+function getExchangeRate(
+    fromCurrency,
+    toCurrency
+) {
+
+    return (
+        ratesToUSD[fromCurrency] /
+        ratesToUSD[toCurrency]
+    );
+}
+
+
+/* =========================================================
+   UPDATE CALCULATIONS
+========================================================= */
+
+function updateTransfer() {
+
+    const amount =
+        parseFloat(amountInput.value) || 0;
+
+
+    const fromCurrency =
+        sendCurrency.value;
+
+
+    const toCurrency =
+        countryCurrencies[country.value];
+
+
+    const received =
+        convertCurrency(
+            amount,
+            fromCurrency,
+            toCurrency
+        );
+
+
+    const rate =
+        getExchangeRate(
+            fromCurrency,
+            toCurrency
+        );
+
+
+    /*
+        Educational simulation fee.
+
+        Fixed equivalent of $3.99 USD.
+    */
+
+    const fee =
+        3.99 /
+        ratesToUSD[fromCurrency];
+
+
+    const total =
+        amount + fee;
+
+
+    receivingCurrency.textContent =
+        toCurrency;
+
+
+    receiveAmount.textContent =
+        formatMoney(
+            received,
+            toCurrency
+        );
+
+
+    rateLine.textContent =
+        `1 ${fromCurrency} = ${rate.toFixed(4)} ${toCurrency}`;
+
+
+    sideRate.textContent =
+        `1 ${fromCurrency} = ${rate.toFixed(4)} ${toCurrency}`;
+
+
+    summarySending.textContent =
+        `${fromCurrency} ${amount.toFixed(2)}`;
+
+
+    summaryFee.textContent =
+        `${fromCurrency} ${fee.toFixed(2)}`;
+
+
+    summaryReceiving.textContent =
+        `${toCurrency} ${received.toFixed(2)}`;
+
+
+    summaryTotal.textContent =
+        `${fromCurrency} ${total.toFixed(2)}`;
+}
+
+
+/* =========================================================
+   COUNTRY CHANGE
+========================================================= */
+
+country.addEventListener(
+    "change",
+    updateTransfer
+);
+
+
+/* =========================================================
+   AMOUNT / CURRENCY CHANGE
+========================================================= */
+
+amountInput.addEventListener(
+    "input",
+    updateTransfer
+);
+
+
+sendCurrency.addEventListener(
+    "change",
+    updateTransfer
+);
+
+
+/* =========================================================
+   DELIVERY METHOD
+========================================================= */
+
+document
+    .querySelectorAll(
+        'input[name="delivery"]'
+    )
+    .forEach(
+        radio => {
+
+            radio.addEventListener(
+                "change",
+                function() {
+
+                    bankForm.style.display =
+                        this.value === "bank"
+                            ? "block"
+                            : "none";
+
+
+                    cashForm.style.display =
+                        this.value === "cash"
+                            ? "block"
+                            : "none";
+
+
+                    walletForm.style.display =
+                        this.value === "wallet"
+                            ? "block"
+                            : "none";
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+function showToast(message) {
+
+    clearTimeout(toastTimer);
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2800
+        );
+}
+
+
+/* =========================================================
+   CONTINUE
+========================================================= */
+
+document
+    .getElementById("continueButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            const amount =
+                parseFloat(
+                    amountInput.value
+                ) || 0;
+
+
+            if (amount <= 0) {
+
+                showToast(
+                    "Enter the amount you want to send."
+                );
+
+                amountInput.focus();
+
+                return;
+            }
+
+
+            const transferData = {
+
+                amount,
+
+                sendingCurrency:
+                    sendCurrency.value,
+
+                destination:
+                    country.value,
+
+                receivingCurrency:
+                    countryCurrencies[
+                        country.value
+                    ],
+
+                deliveryMethod:
+                    document.querySelector(
+                        'input[name="delivery"]:checked'
+                    ).value,
+
+                paymentMethod:
+                    document.querySelector(
+                        'input[name="payment"]:checked'
+                    ).value,
+
+                savedAt:
+                    new Date().toISOString()
+
+            };
+
+
+            /*
+                Save Stage 1 information.
+
+                Stage 2 will read this later.
+            */
+
+            sessionStorage.setItem(
+                "transferStage1",
+                JSON.stringify(
+                    transferData
+                )
+            );
+
+
+            showToast(
+                "Transfer details saved for review."
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   LIVE WEBSITE CLOCK
+========================================================= */
+
+function updateClock() {
+
+    const now =
+        new Date();
+
+
+    document.getElementById(
+        "websiteTime"
+    ).textContent =
+        now.toLocaleTimeString(
+            [],
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+}
+
+
+updateClock();
+
+setInterval(
+    updateClock,
+    30000
+);
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+updateTransfer();
+
+
+/* =========================================================
+   STAGE 2 — RESERVED
+   DO NOT DELETE STAGE 1 ABOVE.
+
+   Stage 2 review/confirmation code will be
+   inserted here after Stage 1 has been tested.
+========================================================= */
+
+</script>
 
 </body>
 </html>
